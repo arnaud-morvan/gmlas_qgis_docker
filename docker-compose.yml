@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  qgis:
+    container_name: gmlas_qgis
+    build: .
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /home/amorvan/.docker.xauth:/root/.docker.xauth
+      - /home/amorvan/dev/QGIS_Plugins/gmlas:/root/.qgis-dev/python/plugins/gmlas
+      - /home/amorvan/.qgis-dev/python/plugins/plugin_reloader:/root/.qgis-dev/python/plugins/plugin_reloader
+    environment: 
+      - DISPLAY
+      - XAUTHORITY=/root/.docker.xauth
+    command: /usr/bin/qgis
