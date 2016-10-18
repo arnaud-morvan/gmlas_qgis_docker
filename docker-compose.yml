@@ -1,15 +1,35 @@
 version: '2'
 
 services:
+  postgresql:
+    #image: 'c2corg_pgsql'
+    image: 'camptocamp/postgis'
+    container_name: 'gmlas_postgresql'
+    volumes:
+    - ./gmlas_pgsql:/var/lib/postgresql/data
+    ports:
+    - 127.0.1.7:5432:5432
+
   qgis:
     container_name: gmlas_qgis
     build: .
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /home/amorvan/.docker.xauth:/root/.docker.xauth
-      - /home/amorvan/dev/QGIS_Plugins/gmlas:/root/.qgis-dev/python/plugins/gmlas
-      - /home/amorvan/.qgis-dev/python/plugins/plugin_reloader:/root/.qgis-dev/python/plugins/plugin_reloader
+      - ./gmlas_qgis3:/root/.qgis3  # Keep settings
+      - /home/amorvan/dev/QGIS_Plugins/gmlas:/root/.qgis3/python/plugins/gmlas
+      - /home/amorvan/dev/QGIS_Plugins/gml_application_schema_toolbox/gml_application_schema_toolbox:/root/.qgis3/python/plugins/gml_application_schema_toolbox
+      - /home/amorvan/dev/QGIS_Plugins/gml_application_schema_toolbox/samples:/home/samples
+      - /home/amorvan/.qgis-dev/python/plugins/plugin_reloader:/root/.qgis3/python/plugins/plugin_reloader
+      - /home/amorvan/.qgis-dev/python/plugins/processing:/root/.qgis3/python/plugins/processing
+      - /home/amorvan/dev/QGIS_Plugins/gml_application_schema_toolbox/samples:/home/qgis/qgisgmlas/data/samples
     environment: 
       - DISPLAY
       - XAUTHORITY=/root/.docker.xauth
+      - PGHOST=postgresql
+      - PGDATABASE=gmlas
+      - PGUSER=gmlas
+      - PGPASSWORD=gmlas
+    links:
+      - postgresql
     command: /usr/bin/qgis

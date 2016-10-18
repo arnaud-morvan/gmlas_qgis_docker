@@ -4,9 +4,10 @@
 cd /home/gdal2
 git checkout gmlas
 git fetch origin
-git merge origin/gmlas --ff-only
+git reset --hard origin/gmlas
 cd gdal
-./configure --prefix=/usr --without-libtool --with-xerces --with-python=/usr/bin/python3 --with-spatialite
+./configure --prefix=/usr --without-libtool --with-xerces --with-curl --with-python=/usr/bin/python3 --with-spatialite
+make clean
 make -j8 -s
 make install
 

@@ -23,15 +23,23 @@ RUN apt-get update \
   x11-apps
   #libgdal-dev grass-dev
 
+RUN apt-get update \
+  && apt-get install --no-install-recommends -y \
+  libxerces-c-dev libcurl4-gnutls-dev
+
+RUN apt-get update \
+  && apt-get install --no-install-recommends -y \
+  libqt5sql5-sqlite python3-yaml python3-numpy python3-pyproj python3-pip libsqlite3-mod-spatialite
+
 COPY ./scripts/ /home/scripts/
 RUN /home/scripts/build_gdal.sh
 RUN /home/scripts/build_qgis.sh
 
-RUN apt-get update \
-  && apt-get install --no-install-recommends -y \
-  libqt5sql5-sqlite python3-yaml python3-numpy python3-pyproj python3-pip
-
+# some development tools
 RUN pip3 install pydevd
+RUN apt-get install --no-install-recommends -y \
+    apt-file
+RUN apt-file update
 
 # A few tunable variables for QGIS
 #ENV QGIS_DEBUG 5
@@ -40,5 +48,12 @@ RUN pip3 install pydevd
 #ENV QGIS_PROJECT_FILE /project/project.qgs
 
 #CMD ["/start.sh"]
+
+RUN mkdir -p /home/qgis/qgisgmlas/data
+COPY qgisgmlas-datasets.tar.gz /home/qgis/qgisgmlas/data/
+WORKDIR /home/qgis/qgisgmlas/data
+RUN tar -zxvf qgisgmlas-datasets.tar.gz
+
+WORKDIR /home/qgis
 
 CMD /usr/bin/qgis
