@@ -31,8 +31,16 @@ RUN apt-get update \
   && apt-get install --no-install-recommends -y \
   libqt5sql5-sqlite python3-yaml python3-numpy python3-pyproj python3-pip libsqlite3-mod-spatialite
 
+RUN echo 'rebuild'
+
 COPY ./scripts/ /home/scripts/
 RUN /home/scripts/build_gdal.sh
+
+RUN apt-get update \
+  && apt-get install --no-install-recommends -y \
+  libqca-qt5-2-dev libqca-qt5-2-plugins
+  # libqca2-plugin-ossl
+
 RUN /home/scripts/build_qgis.sh
 
 # some development tools
@@ -40,6 +48,9 @@ RUN pip3 install pydevd
 RUN apt-get install --no-install-recommends -y \
     apt-file
 RUN apt-file update
+
+RUN apt-get install --no-install-recommends -y \
+    sudo
 
 # A few tunable variables for QGIS
 #ENV QGIS_DEBUG 5
@@ -55,5 +66,7 @@ WORKDIR /home/qgis/qgisgmlas/data
 RUN tar -zxvf qgisgmlas-datasets.tar.gz
 
 WORKDIR /home/qgis
+
+ENV LANG C.UTF-8
 
 CMD /usr/bin/qgis
