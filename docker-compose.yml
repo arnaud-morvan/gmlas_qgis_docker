@@ -19,15 +19,16 @@ services:
       - ./volumes/.config:/root/.config  # keep settings
       - ./volumes/.qgis3:/root/.qgis3  # keep auth
       - ./volumes/.gdal:/root/.gdal/gmlas_xsd_cache  # keep cache
+      - ./volumes/qgis:/home/qgis  # qgis home
 
-      - /home/amorvan/dev/QGIS_Plugins/gmlas:/root/.qgis3/python/plugins/gmlas
-      - /home/amorvan/dev/QGIS_Plugins/gml_application_schema_toolbox/gml_application_schema_toolbox:/root/.qgis3/python/plugins/gml_application_schema_toolbox
+      #- /home/amorvan/dev/QGIS_Plugins/gmlas:/root/.qgis3/python/plugins/gmlas
+      - ./src/gml_application_schema_toolbox/gml_application_schema_toolbox:/root/.qgis3/python/plugins/gml_application_schema_toolbox
       - /home/amorvan/.qgis-dev/python/plugins/plugin_reloader:/root/.qgis3/python/plugins/plugin_reloader
-      # - /home/amorvan/dev/QGIS/python/plugins/processing:/root/.qgis3/python/plugins/processing
+      - /home/amorvan/dev/QGIS/python/plugins/processing:/root/.qgis3/python/plugins/processing
       # - /home/amorvan/dev/QGIS/python/plugins/db_manager:/root/.qgis3/python/plugins/db_manager
 
-      - /home/amorvan/dev/QGIS_Plugins/gml_application_schema_toolbox/samples:/home/qgis/qgisgmlas/data/samples
-      - ./volumes/shp:/home/qgis/qgisgmlas/data/shp
+      - ./src/gml_application_schema_toolbox/samples:/home/qgis/qgisgmlas/data/samples
+      - ./volumes/data:/root/data
 
     environment:
       - DISPLAY
