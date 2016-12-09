@@ -2,9 +2,9 @@
 
 #git clone https://github.com/qgis/QGIS.git
 cd /home/QGIS
-git checkout master
 git fetch origin
 git merge origin/master --ff-only
+
 mkdir -p /home/build
 cd /home/build
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
