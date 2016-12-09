@@ -48,7 +48,7 @@ RUN apt-get install --no-install-recommends -y \
 RUN apt-file update
 
 RUN apt-get install --no-install-recommends -y \
-    sudo
+    sudo postgresql-client
 
 # A few tunable variables for QGIS
 #ENV QGIS_DEBUG 5
