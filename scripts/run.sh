@@ -5,4 +5,5 @@ export XAUTH=~/.docker.xauth
 touch $XAUTH
 xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
 
-docker-compose up --force-recreate qgis
+#docker-compose up --force-recreate qgis
+docker-compose up qgis
