@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-ENV LANG C
+ENV LANG C.UTF-8
 
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
@@ -60,13 +60,17 @@ RUN apt-get install --no-install-recommends -y \
 
 #CMD ["/start.sh"]
 
+COPY widget-plugins/qgis_customwidgets.py /usr/lib/python3/dist-packages/PyQt5/uic/widget-plugins/qgis_customwidgets.py
+
+RUN useradd qgis
+USER qgis
+
 RUN mkdir -p /home/qgis/qgisgmlas/data
 COPY qgisgmlas-datasets.tar.gz /home/qgis/qgisgmlas/data/
+
 WORKDIR /home/qgis/qgisgmlas/data
 RUN tar -zxvf qgisgmlas-datasets.tar.gz
 
 WORKDIR /home/qgis
-
-ENV LANG C.UTF-8
 
 CMD /usr/bin/qgis
