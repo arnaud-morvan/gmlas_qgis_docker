@@ -52,15 +52,9 @@ RUN apt-get install --no-install-recommends -y \
 
 COPY widget-plugins/qgis_customwidgets.py /usr/lib/python3/dist-packages/PyQt5/uic/widget-plugins/qgis_customwidgets.py
 
-RUN useradd qgis
+RUN useradd -r -m -d /home/qgis --uid 999 qgis
 USER qgis
-
-RUN mkdir -p /home/qgis/qgisgmlas/data
-COPY qgisgmlas-datasets.tar.gz /home/qgis/qgisgmlas/data/
-
-WORKDIR /home/qgis/qgisgmlas/data
-RUN tar -zxvf qgisgmlas-datasets.tar.gz
+RUN umask 0002
 
 WORKDIR /home/qgis
-
 CMD /usr/bin/qgis

@@ -8,31 +8,27 @@ services:
     volumes:
     - ./volumes/pgsql:/var/lib/postgresql/data
     ports:
-    - 127.0.1.7:5432:5432
+    - 127.0.1.7:5434:5432
 
   qgis:
     container_name: gmlas_qgis
     build: .
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - /home/amorvan/.docker.xauth:/root/.docker.xauth
-      - ./volumes/.config:/root/.config  # keep settings
-      - ./volumes/.qgis3:/root/.qgis3  # keep auth
-      - ./volumes/.gdal:/root/.gdal/gmlas_xsd_cache  # keep cache
       - ./volumes/qgis:/home/qgis  # qgis home
+      - /home/amorvan/.docker.xauth:/home/qgis/.docker.xauth
 
       #- /home/amorvan/dev/QGIS_Plugins/gmlas:/root/.qgis3/python/plugins/gmlas
-      - ./src/gml_application_schema_toolbox/gml_application_schema_toolbox:/root/.qgis3/python/plugins/gml_application_schema_toolbox
-      - /home/amorvan/.qgis-dev/python/plugins/plugin_reloader:/root/.qgis3/python/plugins/plugin_reloader
-      - /home/amorvan/dev/QGIS/python/plugins/processing:/root/.qgis3/python/plugins/processing
+      - ./src/gml_application_schema_toolbox/gml_application_schema_toolbox:/home/qgis/.qgis3/python/plugins/gml_application_schema_toolbox
+      - /home/amorvan/.qgis-dev/python/plugins/plugin_reloader:/home/qgis/.qgis3/python/plugins/plugin_reloader
+      - /home/amorvan/dev/QGIS/python/plugins/processing:/home/qgis/.qgis3/python/plugins/processing
       # - /home/amorvan/dev/QGIS/python/plugins/db_manager:/root/.qgis3/python/plugins/db_manager
 
       - ./src/gml_application_schema_toolbox/samples:/home/qgis/qgisgmlas/data/samples
-      - ./volumes/data:/root/data
 
     environment:
       - DISPLAY
-      - XAUTHORITY=/root/.docker.xauth
+      - XAUTHORITY=/home/qgis/.docker.xauth
       - PGHOST=postgresql
       - PGDATABASE=gmlas
       - PGUSER=gmlas
