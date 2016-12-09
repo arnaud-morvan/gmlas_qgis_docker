@@ -50,14 +50,6 @@ RUN apt-file update
 RUN apt-get install --no-install-recommends -y \
     sudo postgresql-client
 
-# A few tunable variables for QGIS
-#ENV QGIS_DEBUG 5
-#ENV QGIS_LOG_FILE /proc/self/fd/1
-#ENV PGSERVICEFILE /project/pg_service.conf
-#ENV QGIS_PROJECT_FILE /project/project.qgs
-
-#CMD ["/start.sh"]
-
 COPY widget-plugins/qgis_customwidgets.py /usr/lib/python3/dist-packages/PyQt5/uic/widget-plugins/qgis_customwidgets.py
 
 RUN useradd qgis
